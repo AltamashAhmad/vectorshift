@@ -1,4 +1,4 @@
-from fastapi import FastAPI, Form, Request
+from fastapi import FastAPI, Form, Request, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 
 from integrations.airtable import authorize_airtable, get_items_airtable, oauth2callback_airtable, get_airtable_credentials
@@ -72,6 +72,11 @@ async def oauth2callback_hubspot_integration(request: Request):
 async def get_hubspot_credentials_integration(user_id: str = Form(...), org_id: str = Form(...)):
     return await get_hubspot_credentials(user_id, org_id)
 
-@app.post('/integrations/hubspot/get_hubspot_items')
-async def load_slack_data_integration(credentials: str = Form(...)):
-    return await get_items_hubspot(credentials)
+@app.post('/integrations/hubspot/load')
+async def load_hubspot_data(request: Request):
+    try:
+        form = await request.form()
+        credentials = form.get('credentials')
+        return await get_items_hubspot(credentials)
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=str(e))
