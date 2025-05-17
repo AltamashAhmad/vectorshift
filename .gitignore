@@ -57,4 +57,6 @@ dump.rdb
 .env.local
 
 # Project specific
-VectorShift - Integrations Technical Assessment Instructions.pdf 
+VectorShift - Integrations Technical Assessment Instructions.pdf # System files
+.DS_Store
+_DS_Store
