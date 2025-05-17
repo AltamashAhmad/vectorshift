@@ -2,6 +2,7 @@
 
 import json
 import secrets
+import os
 from fastapi import Request, HTTPException
 import httpx
 import base64
@@ -9,10 +10,15 @@ from integrations.integration_item import IntegrationItem
 from redis_client import add_key_value_redis, get_value_redis
 import urllib.parse
 from fastapi.responses import HTMLResponse
+from dotenv import load_dotenv
 
-CLIENT_ID = '883e7d3f-49ff-4eda-ae0d-f774622cdf96'  # Replace with your HubSpot client ID
-CLIENT_SECRET = '5bbbb5d3-9b06-4cee-9f2d-a15816655e86' 
-REDIRECT_URI = 'http://localhost:8000/integrations/hubspot/oauth2callback'
+# Load environment variables
+load_dotenv()
+
+# Get credentials from environment variables
+CLIENT_ID = os.getenv('HUBSPOT_CLIENT_ID', '883e7d3f-49ff-4eda-ae0d-f774622cdf96')
+CLIENT_SECRET = os.getenv('HUBSPOT_CLIENT_SECRET', '5bbbb5d3-9b06-4cee-9f2d-a15816655e86')
+REDIRECT_URI = os.getenv('HUBSPOT_REDIRECT_URI', 'http://localhost:8000/integrations/hubspot/oauth2callback')
 
 # Properly URL encode the scopes
 SCOPES = [
